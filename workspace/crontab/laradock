@@ -1,0 +1,1 @@
+* * * * * laradock sleep 20; /usr/bin/php /var/www/yii-projects/yii instance/open-trades-pnl; date >> /tmp/cron_test
