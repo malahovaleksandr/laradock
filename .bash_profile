@@ -3,3 +3,24 @@ test -f ~/.profile && . ~/.profile
 test -f ~/.bashrc && . ~/.bashrc
 alias dc="docker-compose"
 alias dc_start="cd /c/Users/vyacheslav.vergeles/platform/laradock && docker-compose up -d apache2 redis"
+
+# remove laravel* containers
+# remove laravel_* images
+dcleanlaradockfunction()
+{
+	echo 'Removing ALL containers associated with laradock'
+	docker ps -a | awk '{ print $1,$2 }' | grep laradock | awk '{print $1}' | xargs -I {} docker rm {}
+
+	# remove ALL images associated with laradock_
+	# does NOT delete laradock/* which are hub images
+	echo 'Removing ALL images associated with laradock_'
+	docker images | awk '{print $1,$2,$3}' | grep laradock_ | awk '{print $3}' | xargs -I {} docker rmi {}
+
+	echo 'Listing all laradock docker hub images...'
+	docker images | grep laradock
+
+	echo 'dcleanlaradock completed'
+}
+# associate the above function with an alias
+# so can recall/lookup by typing 'alias'
+alias dcleanlaradock=dcleanlaradockfunction
